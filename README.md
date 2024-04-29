@@ -19,12 +19,12 @@ git clone https://github.com/identityapproved/id.app.nvim.git
 
 2. Navigate to Repository Directory
 ```bash
-cd your_repository
+cd id.app.nvim
 ```
 
 3. Allow Script Execution
 ```bash
-chmod +x install.sh
+sudo chmod +x install.sh
 ```
 
 4. Run Installation Script
