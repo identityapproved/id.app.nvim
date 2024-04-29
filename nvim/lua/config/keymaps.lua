@@ -10,14 +10,13 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 vim.keymap.set( "n", "<Esc>", '<cmd>nohlsearch<CR>')
 
 -- Buffer Navigation
-vim.keymap.set( "n", "<leader>bn", "bnext") -- Next buffer
-vim.keymap.set( "n", "<leader>bp", "bprevious") -- Prev buffer
-vim.keymap.set( "n", "<leader>bb", "e #") -- Switch to Other Buffer
-vim.keymap.set( "n", "<leader>`", "e #") -- Switch to Other Buffer
-
--- Directory Navigatio}n
-vim.keymap.set( "n", "<leader>m", "NvimTreeFocus")
-vim.keymap.set( "n", "<leader>e", "NvimTreeToggle")
+vim.keymap.set( "n", "<leader>bn", "<cmd>bnext<CR>") -- Next buffer
+vim.keymap.set( "n", "<leader>bp", "<cmd>bprevious<CR>") -- Prev buffer
+vim.keymap.set( "n", "<leader>wq", "<cmd>wq<CR>") -- Prev buffer
+vim.keymap.set( "n", "<leader>wa", "<cmd>wall<CR>") -- Prev buffer
+vim.keymap.set( "n", "<leader>qa", "<cmd>qall<CR>") -- Prev buffer
+-- vim.keymap.set( "n", "<leader>bb", ":e #") -- Switch to Other Buffer
+-- vim.keymap.set( "n", "<leader>`", ":e #") -- Switch to Other Buffer
 
 --  See `:help wincmd` for a list of all window commands
 --- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
@@ -40,15 +39,15 @@ vim.keymap.set( "n", "<C-k>", "TmuxNavigateUp") -- Navigate Up
 vim.keymap.set( "n", "<C-l>", "TmuxNavigateRight") -- Navigate Right
 
 -- Window Management
-vim.keymap.set( "n", "<leader>sv", "vsplit") -- Split Vertically
-vim.keymap.set( "n", "<leader>sh", "split") -- Split Horizontally
+vim.keymap.set( "n", "<leader>sv", "<cmd>vsplit<CR>") -- Split Vertically
+vim.keymap.set( "n", "<leader>sx", "<cmd>split<CR>") -- Split Horizontally
 
 -- Indenting
 vim.keymap.set("v", "<", "<gv") -- Shift Indentation to Left
 vim.keymap.set("v", ">", ">gv") -- Shift Indentation to Right
 
 -- Show Full File-Path
-vim.keymap.set( "n", "<leader>pwd", "echo expand('%:p')") -- Show Full File Path
+-- vim.keymap.set( "n", "<leader>pwd", "echo expand('%:p')") -- Show Full File Path
 
 -- TIP Disable arrow keys in normal mode
 vim.keymap.set( 'n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
