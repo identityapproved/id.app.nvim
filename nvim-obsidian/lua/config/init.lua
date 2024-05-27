@@ -13,6 +13,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("config.globals")
 require("config.options")
+require("config.keymaps")
+require("utils.concealswitch")
 
 local opts = {
 	defaults = {
@@ -22,7 +24,7 @@ local opts = {
 		-- install missing plugins on startup. This doesn't increase startup time.
 		missing = true,
 		-- try to load one of these colorschemes when starting an installation during startup
-		colorscheme = { "fluoromachine" },
+		colorscheme = { "cyberdream" },
 	},
 	change_detection = { -- automatically check for config file changes and reload the ui enabled = false, notify = false, -- get a notification when changes are found }, performance = {
 		rtp = {
