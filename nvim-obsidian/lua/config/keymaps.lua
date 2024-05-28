@@ -66,11 +66,11 @@ map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]ui
 -- })
 
 -- Zen Mode
-map("n", "<leader>zn", ":TZNarrow<CR>", {})
-map("v", "<leader>zn", ":'<,'>TZNarrow<CR>", {})
-map("n", "<leader>sm", ":TZFocus<CR>", {})
-map("n", "<leader>zm", ":TZMinimalist<CR>", {})
-map("n", "<leader>za", ":TZAtaraxis<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>zn", ":TZNarrow<CR>", {})
+vim.api.nvim_set_keymap("v", "<leader>zn", ":'<,'>TZNarrow<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>zf", ":TZFocus<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>zm", ":TZMinimalist<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>za", ":TZAtaraxis<CR>", {})
 
 -- Comments
 map("n", "<C-/>", "gtc", { noremap = false })
@@ -84,9 +84,3 @@ vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", { desc =
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", { desc = "Find buffers." })
 vim.api.nvim_set_keymap("n", "<leader>fk", ":Telescope keymaps<CR>", { desc = "Find keymaps." })
--- -- Telescope
--- local builtin = require("telescope.builtin")
--- vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files." })
--- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
--- vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers." })
--- vim.keymap.set("n", "<leader>fh", builtin.keymaps, { desc = "Find keymaps." })

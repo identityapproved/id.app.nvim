@@ -11,7 +11,9 @@ local config = function()
 	require("lualine").setup({
 		options = {
 			theme = "tokyonight",
+			icons_enabled = true,
 			globalstatus = true,
+			always_divide_middle = true,
 		},
 		tabline = {
 			lualine_b = { "buffers" },
