@@ -7,14 +7,14 @@
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.keymap.set( "n", "<Esc>", '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Buffer Navigation
-vim.keymap.set( "n", "<leader>bn", "<cmd>bnext<CR>") -- Next buffer
-vim.keymap.set( "n", "<leader>bp", "<cmd>bprevious<CR>") -- Prev buffer
-vim.keymap.set( "n", "<leader>wq", "<cmd>wq<CR>") -- Prev buffer
-vim.keymap.set( "n", "<leader>wa", "<cmd>wall<CR>") -- Prev buffer
-vim.keymap.set( "n", "<leader>qa", "<cmd>qall<CR>") -- Prev buffer
+vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>') -- Next buffer
+vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>') -- Prev buffer
+vim.keymap.set('n', '<leader>wq', '<cmd>wq<CR>') -- Prev buffer
+vim.keymap.set('n', '<leader>wa', '<cmd>wall<CR>') -- Prev buffer
+vim.keymap.set('n', '<leader>qa', '<cmd>qall<CR>') -- Prev buffer
 -- vim.keymap.set( "n", "<leader>bb", ":e #") -- Switch to Other Buffer
 -- vim.keymap.set( "n", "<leader>`", ":e #") -- Switch to Other Buffer
 
@@ -25,35 +25,35 @@ vim.keymap.set( "n", "<leader>qa", "<cmd>qall<CR>") -- Prev buffer
 --- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Pane and Window Navigation
-vim.keymap.set( "n", "<C-H>", "<C-w>h", { desc = 'Move focus to the left window' }) -- Navigate Left
-vim.keymap.set( "n", "<C-J>", "<C-w>j", { desc = 'Move focus to the lower window' }) -- Navigate Down
-vim.keymap.set( "n", "<C-K>", "<C-w>k", { desc = 'Move focus to the upper window' }) -- Navigate Up
-vim.keymap.set( "n", "<C-L>", "<C-w>l", { desc = 'Move focus to the right window' }) -- Navigate Right
-vim.keymap.set( "t", "<C-h>", "wincmd h") -- Navigate Left
-vim.keymap.set( "t", "<C-j>", "wincmd j") -- Navigate Down
-vim.keymap.set( "t", "<C-k>", "wincmd k") -- Navigate Up
-vim.keymap.set( "t", "<C-l>", "wincmd l") -- Navigate Right
-vim.keymap.set( "n", "<C-h>", "TmuxNavigateLeft") -- Navigate Left
-vim.keymap.set( "n", "<C-j>", "TmuxNavigateDown") -- Navigate Down
-vim.keymap.set( "n", "<C-k>", "TmuxNavigateUp") -- Navigate Up
-vim.keymap.set( "n", "<C-l>", "TmuxNavigateRight") -- Navigate Right
+vim.keymap.set('n', '<C-H>', '<C-w>h', { desc = 'Move focus to the left window' }) -- Navigate Left
+vim.keymap.set('n', '<C-J>', '<C-w>j', { desc = 'Move focus to the lower window' }) -- Navigate Down
+vim.keymap.set('n', '<C-K>', '<C-w>k', { desc = 'Move focus to the upper window' }) -- Navigate Up
+vim.keymap.set('n', '<C-L>', '<C-w>l', { desc = 'Move focus to the right window' }) -- Navigate Right
+vim.keymap.set('t', '<C-h>', 'wincmd h') -- Navigate Left
+vim.keymap.set('t', '<C-j>', 'wincmd j') -- Navigate Down
+vim.keymap.set('t', '<C-k>', 'wincmd k') -- Navigate Up
+vim.keymap.set('t', '<C-l>', 'wincmd l') -- Navigate Right
+vim.keymap.set('n', '<C-h>', 'TmuxNavigateLeft') -- Navigate Left
+vim.keymap.set('n', '<C-j>', 'TmuxNavigateDown') -- Navigate Down
+vim.keymap.set('n', '<C-k>', 'TmuxNavigateUp') -- Navigate Up
+vim.keymap.set('n', '<C-l>', 'TmuxNavigateRight') -- Navigate Right
 
 -- Window Management
-vim.keymap.set( "n", "<leader>sv", "<cmd>vsplit<CR>") -- Split Vertically
-vim.keymap.set( "n", "<leader>sx", "<cmd>split<CR>") -- Split Horizontally
+vim.keymap.set('n', '<leader>sv', '<cmd>vsplit<CR>') -- Split Vertically
+vim.keymap.set('n', '<leader>sx', '<cmd>split<CR>') -- Split Horizontally
 
 -- Indenting
-vim.keymap.set("v", "<", "<gv") -- Shift Indentation to Left
-vim.keymap.set("v", ">", ">gv") -- Shift Indentation to Right
+vim.keymap.set('v', '<', '<gv') -- Shift Indentation to Left
+vim.keymap.set('v', '>', '>gv') -- Shift Indentation to Right
 
 -- Show Full File-Path
 -- vim.keymap.set( "n", "<leader>pwd", "echo expand('%:p')") -- Show Full File Path
 
 -- TIP Disable arrow keys in normal mode
-vim.keymap.set( 'n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set( 'n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set( 'n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set( 'n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 --  See `:help vim.keymap.set()`
 -- Diagnostic keymaps
@@ -83,6 +83,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- api.nvim_set_keymap("n", "<leader>za", ":TZAtaraxis<CR>", {})
 
 -- Comments
-vim.api.nvim_set_keymap("n", "<C-c>", "gtc", { noremap = false })
-vim.api.nvim_set_keymap("v", "<C-c>", "goc", { noremap = false })
-
+map('n', '<C-c>', 'gtc', { noremap = false })
+vim.api.nvim_set_keymap('v', '<C-c>', 'goc', { noremap = false })

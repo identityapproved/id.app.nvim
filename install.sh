@@ -6,7 +6,7 @@ install_package() {
 }
 
 # Check and install packages if not found
-for pkg in gcc make git ripgrep fd unzip neovim; do
+for pkg in gcc make git ripgrep fd unzip neovim lazygit; do
     command -v $pkg &> /dev/null || install_package $pkg
 done
 

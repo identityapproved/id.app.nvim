@@ -4526,7 +4526,7 @@ local plugins = {
     },
   },
 
-  { -- Glyph Picker
+   -- Glyph Picker
     "2kabhishek/nerdy.nvim",
 
     keys = {
