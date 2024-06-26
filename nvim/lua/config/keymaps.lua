@@ -14,8 +14,9 @@ map("n", "<leader>bp", "<cmd>bprevious<CR>") -- Prev buffer
 map("n", "<leader>wq", "<cmd>wq<CR>") -- Prev buffer
 map("n", "<leader>wa", "<cmd>wall<CR>") -- Prev buffer
 map("n", "<leader>qa", "<cmd>qall<CR>") -- Prev buffer
-map("n", "<leader>bb", ":e #") -- Switch to Other Buffer
-map("n", "<leader>`", ":e #") -- Switch to Other Buffer
+map("n", "<leader>qq", "<cmd>q<CR>") -- Prev buffer
+-- map("n", "<leader>bb", ":e #") -- Switch to Other Buffer
+-- map("n", "<leader>`", ":e #") -- Switch to Other Buffer
 
 --  See `:help wincmd` for a list of all window commands
 map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
@@ -85,6 +86,7 @@ vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", { desc =
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", { desc = "Live Grep" })
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", { desc = "Find buffers." })
 vim.api.nvim_set_keymap("n", "<leader>fk", ":Telescope keymaps<CR>", { desc = "Find keymaps." })
+vim.api.nvim_set_keymap("n", "<leader>fp", ":Telescope projects<CR>", { desc = "Find projects." })
 vim.api.nvim_set_keymap("n", "<leader>ft", ":TodoTelescope<CR>", { desc = "Find Todos." })
 vim.api.nvim_set_keymap("n", "<leader><leader>", ":Telescope cmdline<CR>", { noremap = true, desc = "Cmdline" })
 
@@ -118,3 +120,30 @@ map("n", "<leader>gg", function()
 	})
 	lazygit:toggle()
 end, { desc = "Lazygit" })
+
+-- Compilers
+-- Open compiler
+vim.api.nvim_set_keymap("n", "<leader>co", "<cmd>CompilerOpen<cr>", { noremap = true, silent = true })
+-- Redo last selected option
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>cr",
+	"<cmd>CompilerStop<cr>" -- (Optional, to dispose all tasks before redo)
+		.. "<cmd>CompilerRedo<cr>",
+	{ noremap = true, silent = true }
+)
+-- Toggle compiler results
+vim.api.nvim_set_keymap("n", "<leader>ct", "<cmd>CompilerToggleResults<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>cs",
+	"<cmd>:AsyncRun gcc '$(VIM_FILEPATH)' -o '$(VIM_FILEDIR)/$(VIM_FILENOEXT)'<cr>",
+	{ noremap = true, silent = true }
+)
+-- vim.api.nvim_set_keymap("n", "<leader>cp", "<cmd>:AsyncRun py '$(VIM_FILEPATH)'<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>cp",
+	"<cmd>:AsyncRun -cwd=$(VIM_FILEDIR) -mode=term -pos=bottom python3 '$(VIM_FILEPATH)'<cr>",
+	{ noremap = true, silent = true }
+)

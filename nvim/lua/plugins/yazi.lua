@@ -13,14 +13,14 @@ return {
 			end,
 			desc = "Open the file manager",
 		},
-		{
-			-- Open in the current working directory
-			"<leader>yp",
-			function()
-				require("yazi").yazi(nil, vim.fn.getcwd())
-			end,
-			desc = "Open the file manager in nvim's working directory",
-		},
+		-- {
+		-- 	-- Open in the current working directory
+		-- 	"<leader>yp",
+		-- 	function()
+		-- 		require("yazi").yazi(nil, vim.fn.getcwd())
+		-- 	end,
+		-- 	desc = "Open the file manager in nvim's working directory",
+		-- },
 	},
 	opts = {
 		open_for_directories = false,

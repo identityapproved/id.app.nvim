@@ -1,6 +1,6 @@
 return {
 	"siawkz/nvim-cheatsh",
-	lazy = true,
+	event = "VeryLazy",
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 	},

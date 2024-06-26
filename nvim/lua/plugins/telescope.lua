@@ -19,7 +19,7 @@ local config = function()
 	-- 	extension_name = "cmdline",
 	-- },
 	-- })
-	telescope.load_extension("cmdline")
+	telescope.load_extension("cmdline", "projects")
 end
 
 return {
