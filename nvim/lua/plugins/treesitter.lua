@@ -50,7 +50,6 @@ local config = function()
 			"php",
 			"c",
 			"cpp",
-			"c_sharp",
 			"cmake",
 			"arduino",
 			"cpp",

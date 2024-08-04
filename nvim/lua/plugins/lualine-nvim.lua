@@ -9,19 +9,23 @@ local config = function()
 	-- theme.command.c.bg = nil
 
 	-- Define a function to check that ollama is installed and working
-	local function get_condition()
-		return package.loaded["ollama"] and require("ollama").status ~= nil
-	end
+	-- local function get_condition()
+	-- 	return package.loaded["ollama"] and require("ollama").status ~= nil
+	-- end
+	--
+	-- -- Define a function to check the status and return the corresponding icon
+	-- local function get_status_icon()
+	-- 	local status = require("ollama").status()
+	--
+	-- 	if status == "IDLE" then
+	-- 		return "󱙺 " -- nf-md-robot-outline
+	-- 	elseif status == "WORKING" then
+	-- 		return "󰚩 " -- nf-md-robot
+	-- 	end
+	-- end
 
-	-- Define a function to check the status and return the corresponding icon
-	local function get_status_icon()
-		local status = require("ollama").status()
-
-		if status == "IDLE" then
-			return "󱙺 " -- nf-md-robot-outline
-		elseif status == "WORKING" then
-			return "󰚩 " -- nf-md-robot
-		end
+	local function show_codeium_status()
+		return "{...}" .. vim.fn["codeium#GetStatusString"]()
 	end
 
 	require("lualine").setup({
@@ -37,7 +41,9 @@ local config = function()
 		sections = {
 			lualine_a = { "mode" },
 			lualine_b = { "branch", "diff", "diagnostics" },
-			lualine_c = { { get_status_icon, get_condition }, { "filename", path = 3 } },
+			-- lualine_c = { { get_status_icon, get_condition }, { "filename", path = 3 } },
+			lualine_c = { "filename" },
+			lualine_n = { show_codeium_status },
 			lualine_x = { "encoding", "fileformat", "filetype" },
 			lualine_y = { "progress" },
 			lualine_z = { "location" },
