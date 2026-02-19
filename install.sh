@@ -1,6 +1,32 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  C_RESET=$'\033[0m'
+  C_BOLD=$'\033[1m'
+  C_DIM=$'\033[2m'
+  C_BLUE=$'\033[34m'
+  C_CYAN=$'\033[36m'
+  C_GREEN=$'\033[32m'
+  C_YELLOW=$'\033[33m'
+  C_RED=$'\033[31m'
+else
+  C_RESET=''
+  C_BOLD=''
+  C_DIM=''
+  C_BLUE=''
+  C_CYAN=''
+  C_GREEN=''
+  C_YELLOW=''
+  C_RED=''
+fi
+
+section() { printf "\n%s%s[%s]%s %s\n" "${C_BOLD}" "${C_BLUE}" "$1" "${C_RESET}" "$2"; }
+ok() { printf "%s  ✓%s %s\n" "${C_GREEN}" "${C_RESET}" "$1"; }
+info() { printf "%s  •%s %s\n" "${C_CYAN}" "${C_RESET}" "$1"; }
+warn() { printf "%s  !%s %s\n" "${C_YELLOW}" "${C_RESET}" "$1"; }
+err() { printf "%s  x%s %s\n" "${C_RED}" "${C_RESET}" "$1" >&2; }
+
 usage() {
   cat <<'EOF'
 Usage: install.sh [options]
@@ -51,7 +77,7 @@ while [[ $# -gt 0 ]]; do
       exit 0
       ;;
     *)
-      echo "Unknown argument: $1" >&2
+      err "Unknown argument: $1"
       usage >&2
       exit 2
       ;;
@@ -60,7 +86,8 @@ done
 
 run() {
   if [[ "${DRY_RUN}" -eq 1 ]]; then
-    printf '[dry-run] %q ' "$@"
+    printf "%s[dry-run]%s " "${C_DIM}" "${C_RESET}"
+    printf '%q ' "$@"
     printf '\n'
     return 0
   fi
@@ -68,16 +95,23 @@ run() {
 }
 
 if [[ ! -d "${REPO_DIR}" ]]; then
-  echo "Repo directory does not exist: ${REPO_DIR}" >&2
+  err "Repo directory does not exist: ${REPO_DIR}"
   exit 1
 fi
 
 if [[ ! -f "${REPO_DIR}/init.lua" ]]; then
-  echo "Repo does not look like a Neovim config (missing init.lua): ${REPO_DIR}" >&2
+  err "Repo does not look like a Neovim config (missing init.lua): ${REPO_DIR}"
   exit 1
 fi
 
-echo "==> Linking this repo to ~/.config/nvim"
+printf "%s%sNeovim Config Installer%s\n" "${C_BOLD}" "${C_CYAN}" "${C_RESET}"
+info "Repo: ${REPO_DIR}"
+info "Target: ${TARGET}"
+if [[ "${DRY_RUN}" -eq 1 ]]; then
+  warn "Dry-run enabled (no files will be changed)"
+fi
+
+section "LINK" "Linking config directory"
 TARGET_PARENT="$(dirname "${TARGET}")"
 run mkdir -p "${TARGET_PARENT}"
 
@@ -86,26 +120,26 @@ if [[ -L "${TARGET}" ]]; then
   TARGET_REAL="$(readlink -f "${REPO_DIR}")"
 
   if [[ "${CURRENT_REAL}" == "${TARGET_REAL}" ]]; then
-    echo "Already linked: ${TARGET} -> ${REPO_DIR}"
+    ok "Already linked: ${TARGET} -> ${REPO_DIR}"
   else
     if [[ "${FORCE}" -eq 1 ]]; then
       run rm -f "${TARGET}"
       run ln -s "${REPO_DIR}" "${TARGET}"
       if [[ "${DRY_RUN}" -eq 1 ]]; then
-        echo "Would relink: ${TARGET} -> ${REPO_DIR}"
+        info "Would relink: ${TARGET} -> ${REPO_DIR}"
       else
-        echo "Relinked: ${TARGET} -> ${REPO_DIR}"
+        ok "Relinked: ${TARGET} -> ${REPO_DIR}"
       fi
     else
-      echo "Refusing to replace existing symlink at ${TARGET}." >&2
-      echo "Use --force to replace it." >&2
+      err "Refusing to replace existing symlink at ${TARGET}."
+      warn "Use --force to replace it."
       exit 1
     fi
   fi
 elif [[ -e "${TARGET}" ]]; then
   if [[ "${NO_BACKUP}" -eq 1 ]]; then
-    echo "Refusing to overwrite existing ${TARGET} without backup." >&2
-    echo "Remove it manually or run without --no-backup." >&2
+    err "Refusing to overwrite existing ${TARGET} without backup."
+    warn "Remove it manually or run without --no-backup."
     exit 1
   fi
   TS="$(date +%Y%m%d-%H%M%S)"
@@ -113,25 +147,23 @@ elif [[ -e "${TARGET}" ]]; then
   run mv "${TARGET}" "${BACKUP}"
   run ln -s "${REPO_DIR}" "${TARGET}"
   if [[ "${DRY_RUN}" -eq 1 ]]; then
-    echo "Would back up existing target to: ${BACKUP}"
-    echo "Would link: ${TARGET} -> ${REPO_DIR}"
+    info "Would back up existing target to: ${BACKUP}"
+    info "Would link: ${TARGET} -> ${REPO_DIR}"
   else
-    echo "Backed up existing target to: ${BACKUP}"
-    echo "Linked: ${TARGET} -> ${REPO_DIR}"
+    ok "Backed up existing target to: ${BACKUP}"
+    ok "Linked: ${TARGET} -> ${REPO_DIR}"
   fi
 else
   run ln -s "${REPO_DIR}" "${TARGET}"
   if [[ "${DRY_RUN}" -eq 1 ]]; then
-    echo "Would link: ${TARGET} -> ${REPO_DIR}"
+    info "Would link: ${TARGET} -> ${REPO_DIR}"
   else
-    echo "Linked: ${TARGET} -> ${REPO_DIR}"
+    ok "Linked: ${TARGET} -> ${REPO_DIR}"
   fi
 fi
 
-echo "Next: open nvim and run :Lazy sync"
+section "CHECK" "Dependency check"
 
-echo
-echo "==> Dependency check"
 MISSING=()
 for cmd in nvim git rg fd; do
   if ! command -v "${cmd}" >/dev/null 2>&1; then
@@ -140,11 +172,11 @@ for cmd in nvim git rg fd; do
 done
 
 if [[ ${#MISSING[@]} -gt 0 ]]; then
-  echo "Missing commands: ${MISSING[*]}"
-  echo "Install them with your package manager, then run:"
-  echo "  nvim --headless \"+Lazy! sync\" +qa"
+  warn "Missing commands: ${MISSING[*]}"
+  info "Install them with your package manager, then run:"
+  printf "  %snvim --headless \"+Lazy! sync\" +qa%s\n" "${C_BOLD}" "${C_RESET}"
 else
-  echo "All required commands are available."
-  echo "Recommended next step:"
-  echo "  nvim --headless \"+Lazy! sync\" +qa"
+  ok "All required commands are available."
+  info "Recommended next step:"
+  printf "  %snvim --headless \"+Lazy! sync\" +qa%s\n" "${C_BOLD}" "${C_RESET}"
 fi
