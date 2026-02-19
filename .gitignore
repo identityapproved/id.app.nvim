@@ -6,6 +6,5 @@ debug
 foo.*
 *.log
 data
-AGENTS.md
 .nvimlog
 .DS_Store
