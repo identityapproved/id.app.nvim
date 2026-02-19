@@ -22,6 +22,14 @@ nvim
 
 On first start, Lazy will install plugins automatically.
 
+Or clone anywhere and run the installer:
+
+```bash
+git clone https://github.com/identityapproved/id.app.nvim.git ~/id.app.nvim
+cd ~/id.app.nvim
+./install.sh
+```
+
 ## Link Existing Repo to `~/.config/nvim`
 
 If you keep this repo somewhere else on disk and want to link it:
@@ -29,6 +37,20 @@ If you keep this repo somewhere else on disk and want to link it:
 ```bash
 mv ~/.config/nvim ~/.config/nvim.bak
 ln -sfn /path/to/id.app.nvim ~/.config/nvim
+```
+
+Preferred script-based link:
+
+```bash
+./symlinkin.sh
+```
+
+Useful flags:
+
+```bash
+./symlinkin.sh --dry-run
+./symlinkin.sh --force
+./symlinkin.sh --target ~/.config/nvim
 ```
 
 Then start Neovim:
