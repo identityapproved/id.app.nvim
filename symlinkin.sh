@@ -2,11 +2,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LINK_SCRIPT="${SCRIPT_DIR}/scripts/link_nvim.sh"
+INSTALL_SCRIPT="${SCRIPT_DIR}/install.sh"
 
-if [[ ! -x "${LINK_SCRIPT}" ]]; then
-  chmod +x "${LINK_SCRIPT}" 2>/dev/null || true
+if [[ ! -x "${INSTALL_SCRIPT}" ]]; then
+  chmod +x "${INSTALL_SCRIPT}" 2>/dev/null || true
 fi
 
-exec "${LINK_SCRIPT}" --repo "${SCRIPT_DIR}" "$@"
-
+exec "${INSTALL_SCRIPT}" --link-only "$@"

@@ -53,6 +53,12 @@ Useful flags:
 ./symlinkin.sh --target ~/.config/nvim
 ```
 
+Single entrypoint option:
+
+```bash
+./install.sh --link-only
+```
+
 Then start Neovim:
 
 ```bash
