@@ -1,0 +1,140 @@
+{
+  "docf_g": {
+    "prefix": "docf_g",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      "Args:",
+      "    ${2:arg1}: ${3:Description}",
+      "    ${4:arg2}: ${5:Description}",
+      "",
+      "Returns:",
+      "    ${6:Description}",
+      "\"\"\""
+    ],
+    "description": "Google-style function docstring"
+  },
+  "docc_g": {
+    "prefix": "docc_g",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      "Args:",
+      "    ${2:arg1}: ${3:Description}",
+      "\"\"\""
+    ],
+    "description": "Google-style class docstring"
+  },
+  "docm_g": {
+    "prefix": "docm_g",
+    "body": [
+      "\"\"\"$1.",
+      "\"\"\""
+    ],
+    "description": "Google-style module docstring"
+  },
+  "docf_n": {
+    "prefix": "docf_n",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      "Parameters",
+      "----------",
+      "${2:arg1} : ${3:type}",
+      "    ${4:Description}",
+      "${5:arg2} : ${6:type}",
+      "    ${7:Description}",
+      "",
+      "Returns",
+      "-------",
+      "${8:name} : ${9:type}",
+      "    ${10:Description}",
+      "\"\"\""
+    ],
+    "description": "NumPy-style function docstring"
+  },
+  "docc_n": {
+    "prefix": "docc_n",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      "Parameters",
+      "----------",
+      "${2:arg1} : ${3:type}",
+      "    ${4:Description}",
+      "\"\"\""
+    ],
+    "description": "NumPy-style class docstring"
+  },
+  "docm_n": {
+    "prefix": "docm_n",
+    "body": [
+      "\"\"\"$1.",
+      "\"\"\""
+    ],
+    "description": "NumPy-style module docstring"
+  },
+  "docf_s": {
+    "prefix": "docf_s",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      ":param ${2:arg1}: ${3:Description}",
+      ":param ${4:arg2}: ${5:Description}",
+      ":returns: ${6:Description}",
+      "\"\"\""
+    ],
+    "description": "Sphinx-style function docstring"
+  },
+  "docc_s": {
+    "prefix": "docc_s",
+    "body": [
+      "\"\"\"$1.",
+      "",
+      ":param ${2:arg1}: ${3:Description}",
+      "\"\"\""
+    ],
+    "description": "Sphinx-style class docstring"
+  },
+  "docm_s": {
+    "prefix": "docm_s",
+    "body": [
+      "\"\"\"$1.",
+      "\"\"\""
+    ],
+    "description": "Sphinx-style module docstring"
+  },
+  "docf": {
+    "prefix": "docf",
+    "body": [
+      "\"\"\"Summary.",
+      "",
+      "Args:",
+      "    arg1: Description",
+      "    arg2: Description",
+      "",
+      "Returns:",
+      "    Description",
+      "\"\"\""
+    ],
+    "description": "Short function docstring"
+  },
+  "docc": {
+    "prefix": "docc",
+    "body": [
+      "\"\"\"Summary.",
+      "",
+      "Args:",
+      "    arg1: Description",
+      "\"\"\""
+    ],
+    "description": "Short class docstring"
+  },
+  "docm": {
+    "prefix": "docm",
+    "body": [
+      "\"\"\"Summary.\"\"\""
+    ],
+    "description": "Short module docstring"
+  }
+}
