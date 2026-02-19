@@ -13,7 +13,6 @@ Options:
   --force            Replace an existing symlink even if it points elsewhere
   --no-backup        Do not create backup when target is a real directory/file
   --dry-run          Print actions without changing anything
-  --link-only        Skip dependency check; perform linking only
   -h, --help         Show this help
 EOF
 }
@@ -24,7 +23,6 @@ TARGET="${HOME}/.config/nvim"
 FORCE=0
 NO_BACKUP=0
 DRY_RUN=0
-LINK_ONLY=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -46,10 +44,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     --dry-run)
       DRY_RUN=1
-      shift
-      ;;
-    --link-only)
-      LINK_ONLY=1
       shift
       ;;
     -h|--help)
@@ -135,10 +129,6 @@ else
 fi
 
 echo "Next: open nvim and run :Lazy sync"
-
-if [[ "${LINK_ONLY}" -eq 1 ]]; then
-  exit 0
-fi
 
 echo
 echo "==> Dependency check"

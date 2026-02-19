@@ -42,21 +42,15 @@ ln -sfn /path/to/id.app.nvim ~/.config/nvim
 Preferred script-based link:
 
 ```bash
-./symlinkin.sh
+./install.sh
 ```
 
 Useful flags:
 
 ```bash
-./symlinkin.sh --dry-run
-./symlinkin.sh --force
-./symlinkin.sh --target ~/.config/nvim
-```
-
-Single entrypoint option:
-
-```bash
-./install.sh --link-only
+./install.sh --dry-run
+./install.sh --force
+./install.sh --target ~/.config/nvim
 ```
 
 Then start Neovim:
