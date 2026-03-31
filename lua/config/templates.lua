@@ -48,10 +48,12 @@ local function apply_placeholders(lines, ctx)
   for _, line in ipairs(lines) do
     local s = line
     s = s:gsub("{{date}}", ctx.date)
+    s = s:gsub("{{myd}}", ctx.myd)
     s = s:gsub("{{datetime}}", ctx.datetime)
     s = s:gsub("{{title}}", ctx.title)
     s = s:gsub("{{file}}", ctx.file)
     s = s:gsub("{{path}}", ctx.path)
+    s = s:gsub("{{_cursor_}}", "")
     table.insert(replaced, s)
   end
   return replaced
@@ -80,6 +82,7 @@ local function pick_and_insert(opts)
 
   local ctx = {
     date = os.date("%Y-%m-%d"),
+    myd = os.date("%m.%y.%d"),
     datetime = os.date("%Y-%m-%d %H:%M"),
     path = vim.fn.expand("%:p"),
     file = vim.fn.expand("%:t"),

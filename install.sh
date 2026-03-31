@@ -38,6 +38,8 @@ Options:
   --target DIR       Target path (default: ~/.config/nvim)
   --force            Replace an existing symlink even if it points elsewhere
   --no-backup        Do not create backup when target is a real directory/file
+  --install-deps     Install missing dependencies (Arch with paru/yay)
+  --skip-deps        Skip dependency installation
   --dry-run          Print actions without changing anything
   -h, --help         Show this help
 EOF
@@ -48,6 +50,7 @@ REPO_DIR="${SCRIPT_DIR}"
 TARGET="${HOME}/.config/nvim"
 FORCE=0
 NO_BACKUP=0
+INSTALL_DEPS=1
 DRY_RUN=0
 
 while [[ $# -gt 0 ]]; do
@@ -66,6 +69,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-backup)
       NO_BACKUP=1
+      shift
+      ;;
+    --install-deps)
+      INSTALL_DEPS=1
+      shift
+      ;;
+    --skip-deps)
+      INSTALL_DEPS=0
       shift
       ;;
     --dry-run)
@@ -92,6 +103,32 @@ run() {
     return 0
   fi
   "$@"
+}
+
+ensure_helper() {
+  if command -v paru >/dev/null 2>&1; then
+    info "Using paru for dependencies."
+    return 0
+  fi
+  if command -v yay >/dev/null 2>&1; then
+    info "Using yay for dependencies."
+    return 0
+  fi
+
+  warn "No AUR helper found."
+  return 1
+}
+
+install_pkg() {
+  local pkg="$1"
+  if command -v paru >/dev/null 2>&1; then
+    run paru -S --needed --noconfirm "$pkg"
+  elif command -v yay >/dev/null 2>&1; then
+    run yay -S --needed --noconfirm "$pkg"
+  else
+    err "No AUR helper available for installing ${pkg}."
+    return 1
+  fi
 }
 
 if [[ ! -d "${REPO_DIR}" ]]; then
@@ -173,8 +210,29 @@ done
 
 if [[ ${#MISSING[@]} -gt 0 ]]; then
   warn "Missing commands: ${MISSING[*]}"
-  info "Install them with your package manager, then run:"
-  printf "  %snvim --headless \"+Lazy! sync\" +qa%s\n" "${C_BOLD}" "${C_RESET}"
+  if [[ "${INSTALL_DEPS}" -eq 1 ]]; then
+    if [[ -f "/etc/arch-release" ]]; then
+      if ensure_helper; then
+        section "INSTALL" "Installing missing dependencies"
+        for cmd in "${MISSING[@]}"; do
+          case "${cmd}" in
+            nvim) install_pkg neovim ;;
+            rg) install_pkg ripgrep ;;
+            fd) install_pkg fd ;;
+            git) install_pkg git ;;
+            *) install_pkg "${cmd}" ;;
+          esac
+        done
+      else
+        warn "Install paru or yay and re-run with --install-deps."
+      fi
+    else
+      warn "Auto-install only supports Arch with paru/yay."
+    fi
+  else
+    info "Install them with your package manager, then run:"
+    printf "  %snvim --headless \"+Lazy! sync\" +qa%s\n" "${C_BOLD}" "${C_RESET}"
+  fi
 else
   ok "All required commands are available."
   info "Recommended next step:"

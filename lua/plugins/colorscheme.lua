@@ -1,15 +1,16 @@
 return {
-  "mistweaverco/retro-theme.nvim",
+  "water-sucks/darkrose.nvim",
   lazy = false,
   priority = 1000,
-  opts = {
-    italic_comments = true,
-    disable_cache = false,
-    hot_reload = false,
-  },
-  config = function(_, opts)
-    require("retro-theme").setup(opts)
-    vim.cmd.colorscheme("retro-theme")
+  config = function()
+    require("darkrose").setup({
+      styles = {
+        bold = true,
+        italic = true,
+        underline = true,
+      },
+    })
+    vim.cmd.colorscheme("darkrose")
 
     local function set_transparent()
       local groups = {
@@ -20,6 +21,11 @@ return {
         "LineNr",
         "CursorLineNr",
         "EndOfBuffer",
+        "StatusLine",
+        "StatusLineNC",
+        "TabLine",
+        "TabLineFill",
+        "WinSeparator",
       }
       for _, group in ipairs(groups) do
         vim.api.nvim_set_hl(0, group, { bg = "none" })
@@ -28,7 +34,7 @@ return {
 
     set_transparent()
     vim.api.nvim_create_autocmd("ColorScheme", {
-      group = vim.api.nvim_create_augroup("retro_theme_transparent", { clear = true }),
+      group = vim.api.nvim_create_augroup("darkrose_transparent", { clear = true }),
       callback = set_transparent,
     })
   end,

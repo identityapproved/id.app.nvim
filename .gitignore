@@ -5,6 +5,7 @@ debug
 .repro
 foo.*
 *.log
+__pycache__/
 data
 .nvimlog
 .DS_Store

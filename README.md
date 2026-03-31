@@ -1,10 +1,23 @@
-# Neovim Config (`id.app.nvim`)
+# `id.app.nvim` config
 
-Personal Neovim configuration built on top of LazyVim.
+Personal Neovim configuration built on top of LazyVim, tuned for security research, lab work, writeups, and fast note-taking.
 
 This repository is meant to be the source of truth for `~/.config/nvim` across machines.
 
-## Requirements
+## 𖦏 Focus 𖣠
+
+This setup is optimized for a security / hacking workflow rather than general-purpose editing.
+
+- Markdown-first note taking for boxes, challenges, and research logs
+- Zettelkasten-style note creation with `zk`
+- HTB / lab templates for enumeration, post-exploitation, and privesc notes
+- Python templates for validation-oriented CVE / PoC work
+- Terminal-heavy workflows with fast splits, fzf, and search-first navigation
+- Language tooling centered on Python, Go, Rust, TypeScript, and Nim
+
+The bias is toward speed, structured notes, reproducible commands, and lightweight PoC scaffolding.
+
+## 🛠 Requirements
 
 - Neovim `>= 0.9` (recommended: latest stable)
 - Git
@@ -13,7 +26,7 @@ This repository is meant to be the source of truth for `~/.config/nvim` across m
 - `fd` (or `fdfind` depending on distro)
 - `fzf` (for workflows/plugins that use it)
 
-## Install (new machine)
+## ➤ Install 🖧
 
 ```bash
 git clone https://github.com/identityapproved/id.app.nvim.git ~/.config/nvim
@@ -30,7 +43,13 @@ cd ~/id.app.nvim
 ./install.sh
 ```
 
-## Link Existing Repo to `~/.config/nvim`
+Setup script:
+
+```bash
+./install.sh
+```
+
+## ➜] Link Existing Repo to `~/.config/nvim`
 
 If you keep this repo somewhere else on disk and want to link it:
 
@@ -59,7 +78,7 @@ Then start Neovim:
 nvim
 ```
 
-## Update Plugins
+## 🗘 Update Plugins
 
 Inside Neovim:
 
@@ -73,21 +92,39 @@ nvim --headless "+Lazy! sync" +qa
 nvim --headless "+Lazy! check" +qa
 ```
 
-## Repo Layout
+## ⋮ ⌗ ┆ Repo Layout
 
 - `init.lua`: Neovim entrypoint
 - `lua/config/`: core config (options, keymaps, autocmds, bootstrap)
 - `lua/plugins/`: plugin specs and plugin-specific setup
-- `templates/`: reusable note/code templates
+- `templates/`: reusable note and code templates, including security and HTB workflows
 - `snippets/`: custom snippets
 - `lazy-lock.json`: pinned plugin versions
 
-## Notes
+## ☕︎‧₊˚⏱ Workflow Highlights ٠࣪⋆₊˚ᵎ
 
-- `AGENTS.md` is intentionally tracked and should stay in the repo.
-- Machine-local runtime artifacts (for example `.nvimlog`, `.DS_Store`) are ignored.
+### Notes and writeups
 
-## Troubleshooting
+- Markdown buffers can insert note templates with `<leader>it`
+- Markdown buffers can insert callout snippets with `<leader>ic`
+- `zk` is used for zettel-style note management
+- `<leader>zn` creates a new note through a prompt
+
+### Focus mode
+
+- `<leader>zm` toggles Zen Mode
+
+### Security templates
+
+The repo includes reusable templates for:
+
+- HTB / lab note sections
+- Linux post-foothold and privesc checklists
+- Docker group / `sg` enumeration notes
+- Python CVE / research PoC skeletons
+- HTTP, SSRF, LFI, SQLi, SSTI, IDOR, upload, race, and WebSocket validation templates
+
+## (˘ŏ_ŏ) Troubleshooting
 
 If plugins look broken after changes:
 

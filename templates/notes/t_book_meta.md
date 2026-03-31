@@ -21,7 +21,7 @@ source_language_title: ""
 translated_title: ""
 isbn: ""
 notes_level: book
-created: { { _lua:os.date("%y/%m/%d %H/%M")_ } }
+created: {{myd}}
 ---
 
 {{_cursor_}}
