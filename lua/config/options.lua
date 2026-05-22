@@ -5,6 +5,7 @@ require("config.clipboard").setup()
 -- Add any additional options here
 vim.g.maplocalleader = " "
 vim.opt.conceallevel = 0
+vim.opt.inccommand = "split"
 
 
 vim.env.ZK_NOTEBOOK_DIR = vim.env.HOME .. "/drives/kodak/zettelnotes"

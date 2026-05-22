@@ -24,6 +24,7 @@ return {
         "Once your brain remembers K (hover) and gl (diagnostic info), the rest falls into place.",
         "Use <leader>ff to find files fast; your future self will thank you.",
         "Grepping beats scrolling. Trust the search.",
+        "g; jumps to the previous edit; g, walks forward again.",
         "<leader>if now inserts file links in md format via fzf.",
         "Define “done” more aggressively. “Understood enough to explain” beats “perfectly mapped.”",
         "The next version of you is not smarter. It is louder, narrower, and more finished.",

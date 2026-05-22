@@ -6,6 +6,11 @@
 local map = vim.keymap.set
 local task = require("config.taskwarrior")
 
+map({ "n", "x" }, "j", "j", { desc = "Down" })
+map({ "n", "x" }, "k", "k", { desc = "Up" })
+map({ "n", "x" }, "<Down>", "j", { desc = "Down" })
+map({ "n", "x" }, "<Up>", "k", { desc = "Up" })
+
 map("n", "<leader>twa", task.add_task, { desc = "Add Taskwarrior task" })
 
 map("n", "<leader>t-", function()
