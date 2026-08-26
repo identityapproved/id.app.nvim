@@ -1,4 +1,4 @@
--- C support: Mason's clangd for LSP, system clang-format via conform.
+-- C support: Mason's clangd for LSP and Mason's clang-format via conform.
 --
 -- clangd comes from Mason rather than the system LLVM so this config is
 -- self-sufficient on any machine -- the Void laptop has no clangd packaged at
@@ -15,9 +15,7 @@ return {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      if not vim.tbl_contains(opts.ensure_installed, "clangd") then
-        table.insert(opts.ensure_installed, "clangd")
-      end
+      vim.list_extend(opts.ensure_installed, { "clangd", "clang-format" })
     end,
   },
   {
@@ -63,10 +61,17 @@ return {
   {
     "stevearc/conform.nvim",
     optional = true,
-    opts = {
-      formatters_by_ft = {
-        c = { "clang_format" },
-      },
-    },
+    opts = function(_, opts)
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+      opts.formatters_by_ft.c = { "clang_format" }
+
+      -- Same reasoning as clangd above: the system LLVM build precedes Mason
+      -- on PATH, so name the Mason binary explicitly once it exists.
+      local mason_fmt = vim.fn.expand("$HOME/.local/share/nvim/mason/bin/clang-format")
+      if vim.fn.executable(mason_fmt) == 1 then
+        opts.formatters = opts.formatters or {}
+        opts.formatters.clang_format = { command = mason_fmt }
+      end
+    end,
   },
 }
