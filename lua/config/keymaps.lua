@@ -37,3 +37,7 @@ map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Focus upper window" })
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Focus right window" })
 
 map("n", "<leader>zn", "<cmd>ZkNewPrompt<cr>", { desc = "Zk new note (prompt/date)" })
+
+-- Block comments (built-in gc/gcc is line-only). gb wraps a selection, gbc the current line.
+map("x", "gb", ":<C-u>lua require('config.blockcomment').toggle()<cr>", { silent = true, desc = "Toggle block comment (selection)" })
+map("n", "gbc", "<cmd>lua require('config.blockcomment').toggle(true)<cr>", { silent = true, desc = "Toggle block comment (line)" })
