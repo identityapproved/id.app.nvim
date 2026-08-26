@@ -1,0 +1,20 @@
+return {
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      if not vim.tbl_contains(opts.ensure_installed, "nim") then
+        table.insert(opts.ensure_installed, "nim")
+      end
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        nim = { "nimpretty" },
+      },
+    },
+  },
+}
