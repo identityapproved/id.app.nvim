@@ -67,18 +67,24 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      -- OpenCode writes to two directories and the npm one is easy to miss.
+      -- OpenCode writes to two places and the npm one is easy to get wrong.
       -- Servers published as release binaries land in Global.Path.bin =
-      -- ~/.cache/opencode/bin; servers published on npm are `bun add`-ed into
-      -- the *config* directory and surface at
-      -- ~/.config/opencode/node_modules/.bin. Both are searched here.
+      -- ~/.cache/opencode/bin. Servers published on npm go through Npm.add,
+      -- which derives its directory from the *full package spec*
+      -- (join(cache, "packages", spec)), so they surface at
+      -- ~/.cache/opencode/packages/<spec>/node_modules/.bin -- one directory
+      -- per spec, which is why this has to be a glob rather than a fixed path.
       --
       -- Self-contained: do not rely on the shell having exported these.
       -- Appended so they cannot shadow Mason's copies or system binaries.
-      for _, dir in ipairs({
-        vim.fn.expand("$HOME/.cache/opencode/bin"),
-        vim.fn.expand("$HOME/.config/opencode/node_modules/.bin"),
-      }) do
+      -- Resolved once at load, so a server OpenCode fetches mid-session is not
+      -- visible until the next start.
+      local dirs = { vim.fn.expand("$HOME/.cache/opencode/bin") }
+      vim.list_extend(
+        dirs,
+        vim.fn.glob(vim.fn.expand("$HOME/.cache/opencode/packages/*/node_modules/.bin"), true, true)
+      )
+      for _, dir in ipairs(dirs) do
         if not (":" .. vim.env.PATH .. ":"):find(":" .. dir .. ":", 1, true) then
           vim.env.PATH = vim.env.PATH .. ":" .. dir
         end
