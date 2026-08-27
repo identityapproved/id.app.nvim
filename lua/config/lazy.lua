@@ -20,7 +20,12 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import LazyVim extras
     { import = "lazyvim.plugins.extras.dap.core" },
-    { import = "lazyvim.plugins.extras.lang.go" },
+    -- The Go extra declares gopls, goimports, gofumpt and delve, and all four
+    -- are `pkg:golang/...` in the Mason registry -- Mason builds them with
+    -- `go install`. Without a Go toolchain every one fails on startup, so the
+    -- import is gated. lazy.nvim evaluates `cond` before importing
+    -- (lazy/core/plugin.lua:136), so nothing from it is declared at all.
+    { import = "lazyvim.plugins.extras.lang.go", cond = vim.fn.executable("go") == 1 },
     { import = "lazyvim.plugins.extras.lang.python" },
     { import = "lazyvim.plugins.extras.lang.rust" },
     -- import/override with your plugins
