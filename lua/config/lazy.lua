@@ -40,6 +40,14 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
+  -- Use the local checkout of my own plugins when it exists, otherwise clone
+  -- from GitHub. Without `fallback` a fresh machine errors with
+  -- "Local plugin does not exist at ~/github/lain.nvim".
+  dev = {
+    path = "~/github",
+    patterns = { "identityapproved" },
+    fallback = true,
+  },
   -- lain only, no fallback: a load failure should be loud while testing.
   install = { colorscheme = { "lain" } },
   checker = {
