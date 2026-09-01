@@ -9,3 +9,4 @@ __pycache__/
 data
 .nvimlog
 .DS_Store
+lazy-lock.json
