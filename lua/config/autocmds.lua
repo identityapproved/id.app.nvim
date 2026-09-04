@@ -182,15 +182,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Apply clipboard provider after LazyVim finishes loading.
-vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("custom_clipboard_provider", { clear = true }),
-  pattern = "VeryLazy",
-  callback = function()
-    require("config.clipboard").setup()
-  end,
-})
-
 -- Markdown: insert file link via fzf-lua
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("custom_markdown_links", { clear = true }),
