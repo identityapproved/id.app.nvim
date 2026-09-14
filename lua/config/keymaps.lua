@@ -30,11 +30,22 @@ map("n", "<leader>tmp", function()
   vim.bo.filetype = "markdown"
 end, { desc = "Temporary markdown note (vertical split)" })
 
--- Terminal window navigation (avoid shell handling ctrl-h/j/k/l)
-map("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Focus left window" })
-map("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "Focus lower window" })
-map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Focus upper window" })
-map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Focus right window" })
+-- Terminal window navigation (avoid shell handling ctrl-h/j/k/l). fzf-lua runs
+-- fzf in a terminal buffer (filetype "fzf"), where the keys belong to fzf --
+-- ctrl-j / ctrl-k move its list, as in the tmux picker -- so they pass through
+-- there. expr maps are noremap, so the returned key reaches the job as is.
+local function term_nav(key)
+  return function()
+    if vim.bo.filetype == "fzf" then
+      return "<C-" .. key .. ">"
+    end
+    return "<C-\\><C-n><C-w>" .. key
+  end
+end
+map("t", "<C-h>", term_nav("h"), { expr = true, desc = "Focus left window" })
+map("t", "<C-j>", term_nav("j"), { expr = true, desc = "Focus lower window" })
+map("t", "<C-k>", term_nav("k"), { expr = true, desc = "Focus upper window" })
+map("t", "<C-l>", term_nav("l"), { expr = true, desc = "Focus right window" })
 
 map("n", "<leader>zn", "<cmd>ZkNewPrompt<cr>", { desc = "Zk new note (prompt/date)" })
 

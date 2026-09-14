@@ -8,37 +8,60 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local fzf = require("fzf-lua")
-      local theme_opts = {
-        "--highlight-line",
-        "--info=inline-right",
-        "--ansi",
-        "--layout=reverse",
-        "--border=none",
-        "--color=bg+:#3B4252",
-        "--color=bg:#2E3440",
-        "--color=border:#81A1C1",
-        "--color=fg:#D8DEE9",
-        "--color=gutter:#2E3440",
-        "--color=header:#EBCB8B",
-        "--color=hl+:#88C0D0",
-        "--color=hl:#88C0D0",
-        "--color=info:#4C566A",
-        "--color=marker:#BF616A",
-        "--color=pointer:#BF616A",
-        "--color=prompt:#88C0D0",
-        "--color=query:#D8DEE9:regular",
-        "--color=scrollbar:#81A1C1",
-        "--color=separator:#EBCB8B",
-        "--color=spinner:#B48EAD",
-      }
 
-      local env_opts = table.concat(theme_opts, " ")
-      vim.env.FZF_DEFAULT_OPTS = vim.trim((vim.env.FZF_DEFAULT_OPTS or "") .. " " .. env_opts)
+      -- Markdown previews through glow with the Lain glamour style, as in the
+      -- tmux picker (lainland scripts/tmux-pick). fzf-lua runs extension
+      -- commands in a pty sized to the preview window, which is what glow
+      -- needs to style at all; tput reads that width for the wrap. Without
+      -- glow, markdown keeps the normal treesitter preview.
+      local extensions = {}
+      if vim.fn.executable("glow") == 1 then
+        local glow = {
+          "sh",
+          "-c",
+          'COLORTERM=truecolor glow -s "$HOME/.config/glow/themes/lain.json" -w "$(tput cols)" "$1"',
+          "sh",
+          "{file}",
+        }
+        extensions = { md = glow, markdown = glow }
+      end
 
       fzf.setup({
+        -- Colors come from the colorscheme. `true` maps every fzf color to an
+        -- FzfLuaFzf* highlight group, which lain.nvim styles (lua/lain/groups/
+        -- plugins.lua), so the picker follows the theme instead of carrying
+        -- hex values of its own. Hardcoded `--color` flags here, or appended to
+        -- FZF_DEFAULT_OPTS, would override those groups.
+        fzf_colors = true,
         winopts = {
           width = 0.85,
           height = 0.85,
+        },
+        previewers = {
+          builtin = { extensions = extensions },
+        },
+        -- Scrolling, the same keys as every other fzf here (lainland
+        -- fzf/lain.fzfrc): ctrl-f / ctrl-b half a page, alt-j / alt-k a line,
+        -- shift-down / shift-up a page, f3 wrap, f4 hide. `builtin` is nvim's
+        -- own previewer, `fzf` the fzf-native ones (bat, git). ctrl-f / ctrl-b
+        -- replace fzf-lua's list half-page defaults; ctrl-u stays "clear query".
+        -- The leading `true` keeps fzf-lua's defaults; without it a custom
+        -- table replaces them and shift/f3/f4/ctrl-u stop working.
+        keymap = {
+          builtin = {
+            true,
+            ["<C-f>"] = "preview-half-page-down",
+            ["<C-b>"] = "preview-half-page-up",
+            ["<M-j>"] = "preview-down",
+            ["<M-k>"] = "preview-up",
+          },
+          fzf = {
+            true,
+            ["ctrl-f"] = "preview-half-page-down",
+            ["ctrl-b"] = "preview-half-page-up",
+            ["alt-j"] = "preview-down",
+            ["alt-k"] = "preview-up",
+          },
         },
         files = {
           -- include hidden and ignored files so .txt never gets filtered out
@@ -50,24 +73,6 @@ return {
           ["--ansi"] = "",
           ["--layout"] = "reverse",
           ["--border"] = "none",
-          ["--color"] = {
-            "bg+:#3B4252",
-            "bg:#2E3440",
-            "border:#81A1C1",
-            "fg:#D8DEE9",
-            "gutter:#2E3440",
-            "header:#EBCB8B",
-            "hl+:#88C0D0",
-            "hl:#88C0D0",
-            "info:#4C566A",
-            "marker:#BF616A",
-            "pointer:#BF616A",
-            "prompt:#88C0D0",
-            "query:#D8DEE9:regular",
-            "scrollbar:#81A1C1",
-            "separator:#EBCB8B",
-            "spinner:#B48EAD",
-          },
         },
       })
 
