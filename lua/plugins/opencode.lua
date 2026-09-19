@@ -48,6 +48,10 @@ return {
   {
     "folke/which-key.nvim",
     opts = {
+      -- LazyVim selects the "helix" preset, which carries border = "rounded".
+      -- which-key never reads 'winborder', and user opts merge after the
+      -- preset, so this is the only place the leader menu can be squared off.
+      win = { border = "single" },
       spec = {
         { "<leader>a", group = "opencode" },
       },

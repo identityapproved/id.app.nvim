@@ -5,13 +5,13 @@ return {
     float = {
       padding = 0,
       border = {
-        { "╭", "FloatBorder" },
+        { "┌", "FloatBorder" },
         { "─", "FloatBorder" },
-        { "╮", "FloatBorder" },
+        { "┐", "FloatBorder" },
         { "│", "FloatBorder" },
-        { "╯", "FloatBorder" },
+        { "┘", "FloatBorder" },
         { "─", "FloatBorder" },
-        { "╰", "FloatBorder" },
+        { "└", "FloatBorder" },
         { "│", "FloatBorder" },
       },
       mappings = {

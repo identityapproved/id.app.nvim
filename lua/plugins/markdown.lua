@@ -51,7 +51,7 @@ return {
     cmd = "Glow",
     ft = "markdown",
     opts = {
-      border = "rounded",
+      border = "single",
       width_ratio = 0.8,
       height_ratio = 0.8,
     },

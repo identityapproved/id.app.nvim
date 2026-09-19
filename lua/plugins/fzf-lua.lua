@@ -36,6 +36,11 @@ return {
         winopts = {
           width = 0.85,
           height = 0.85,
+          -- fzf-lua defaults both of these to "rounded" and never falls back
+          -- to 'winborder'. Not to be confused with fzf_opts["--border"]
+          -- below, which is a flag to the fzf binary's own TUI.
+          border = "single",
+          preview = { border = "single" },
         },
         previewers = {
           builtin = { extensions = extensions },
