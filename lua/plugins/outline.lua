@@ -76,7 +76,8 @@ return {
       peek_location = "o",
       goto_and_close = "<S-Cr>",
       restore_location = "<C-g>",
-      hover_symbol = "<C-space>",
+      -- Was <C-space>, which tmux now takes as its prefix before nvim sees it.
+      hover_symbol = "gh",
       toggle_preview = "K",
       rename_symbol = "r",
       code_actions = "a",
