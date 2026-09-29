@@ -29,7 +29,10 @@ return {
     notifier = { enabled = true },
     quickfile = { enabled = true },
     scope = { enabled = true },
-    scroll = { enabled = true },
+    -- Smooth scrolling interpolates a redraw per frame, which is the most
+    -- expensive UI feature enabled here. NormalNvim disables its animation plugin
+    -- outright on weak devices for the same reason. Toggle back with <leader>uS.
+    scroll = { enabled = false },
     statuscolumn = { enabled = true },
     words = { enabled = true },
   },
