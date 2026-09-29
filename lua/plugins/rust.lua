@@ -23,12 +23,14 @@ return {
   },
 
   -- Merge into the extra's rustaceanvim opts.
-  -- Pinned to v8.0.5: v9.0.0 dropped Neovim 0.11 support and hard-requires 0.12
-  -- (nightly), but this host runs stable 0.11.7. v8.0.5 is the last release that
-  -- gates on nvim-0.11. Remove this pin once the system Neovim reaches 0.12.
+  -- Was held at v8.0.5 because v9.0.0 hard-requires Neovim 0.12 and this host was
+  -- on stable 0.11.7. It now runs 0.12.5, so the pin moves up to the v9 major
+  -- rather than coming off entirely: rustaceanvim gates hard on the Neovim
+  -- version, and a major range keeps the next such bump from arriving unannounced
+  -- (the repo default is `version = false`, i.e. track HEAD -- see config/lazy.lua).
   {
     "mrcjkb/rustaceanvim",
-    version = "v8.0.5",
+    version = "^9",
     opts = function(_, opts)
       opts.server = opts.server or {}
 
