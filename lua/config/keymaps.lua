@@ -52,3 +52,34 @@ map("n", "<leader>zn", "<cmd>ZkNewPrompt<cr>", { desc = "Zk new note (prompt/dat
 -- Block comments (built-in gc/gcc is line-only). gb wraps a selection, gbc the current line.
 map("x", "gb", ":<C-u>lua require('config.blockcomment').toggle()<cr>", { silent = true, desc = "Toggle block comment (selection)" })
 map("n", "gbc", "<cmd>lua require('config.blockcomment').toggle(true)<cr>", { silent = true, desc = "Toggle block comment (line)" })
+
+-- Changing or deleting should not clobber the yank register: c/C/x/X route
+-- through the black hole, and visual p/P are swapped so pasting over a selection
+-- does not steal the register for the text it replaced. From NormalNvim
+-- (lua/base/4-mappings.lua). Note x no longer feeds the unnamed register.
+map({ "n", "x" }, "c", '"_c', { desc = "Change (no yank)" })
+map({ "n", "x" }, "C", '"_C', { desc = "Change to EOL (no yank)" })
+map({ "n", "x" }, "x", '"_x', { desc = "Delete char (no yank)" })
+map({ "n", "x" }, "X", '"_X', { desc = "Delete back (no yank)" })
+map("x", "p", "P", { desc = "Paste (keep register)" })
+map("x", "P", "p", { desc = "Paste (yank replaced)" })
+
+-- Per-buffer LSP semantic token kill switch, for when one heavy file is dragging
+-- the whole session. Treesitter already has LazyVim's <leader>uT.
+Snacks.toggle
+  .new({
+    name = "LSP Semantic Tokens (Buffer)",
+    get = function()
+      return vim.b.semantic_tokens_enabled ~= false
+    end,
+    set = function(state)
+      local bufnr = vim.api.nvim_get_current_buf()
+      vim.b[bufnr].semantic_tokens_enabled = state
+      for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+        if client:supports_method("textDocument/semanticTokens/full") then
+          vim.lsp.semantic_tokens[state and "start" or "stop"](bufnr, client.id)
+        end
+      end
+    end,
+  })
+  :map("<leader>uk")
