@@ -226,6 +226,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("custom_markdown_typography", { clear = true }),
   pattern = { "*.md", "*.markdown" },
   callback = function(args)
+    -- ~30 gsub passes plus an inline-code scanner per line: a visible stall on
+    -- :w for a long note on this hardware.
+    if require("config.bigfile").is_big_file(args.buf) then
+      return
+    end
     local ft = vim.bo[args.buf].filetype
     if ft == "markdown" or ft == "markdown_inline" then
       normalize_markdown_smart_quotes(args.buf)

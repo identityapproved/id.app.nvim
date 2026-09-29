@@ -36,3 +36,9 @@ vim.opt.writebackup = false
 
 -- Keep LazyVim autoformat enabled by default
 vim.g.autoformat = true
+
+-- Thresholds for config.bigfile.is_big_file, which gates our own per-buffer work
+-- (the markdown save normalizer, colorizer). Far below NormalNvim's 5Mb/50k
+-- because this laptop is slow. snacks.bigfile keeps its own, larger threshold for
+-- the treesitter/LSP cutoff on genuinely huge files.
+vim.g.big_file = { size = 1024 * 512, lines = 10000 }
