@@ -3,7 +3,8 @@
 -- Configuration goes through vim.g.opencode_opts, not a setup() call, so this
 -- spec deliberately has no `opts` key -- the defaults are what we want.
 --
--- Keys live under <leader>a: <leader>o is outline.nvim and <leader>t is
+-- Keys live under <leader>ao: <leader>a is the shared "ai" group (opencode,
+-- codecompanion, minuet), <leader>o is outline.nvim and <leader>t is
 -- terminal/taskwarrior. Upstream's recommended <C-a>, <C-x>, go and goo are
 -- skipped because they shadow the built-in increment, decrement and goto-byte.
 
@@ -34,13 +35,13 @@ return {
     "nickjvandyke/opencode.nvim",
     version = "*", -- latest stable release
     keys = {
-      { "<leader>aa", ask, mode = { "n", "x" }, desc = "Ask opencode" },
-      { "<leader>as", pick, mode = { "n", "x" }, desc = "Select opencode prompt/command" },
-      { "<leader>ao", op(), mode = { "n", "x" }, expr = true, desc = "Send motion to opencode" },
-      { "<leader>aO", op("_"), expr = true, desc = "Send line to opencode" },
-      { "<leader>an", cmd("session.new"), desc = "New opencode session" },
-      { "<leader>ai", cmd("session.interrupt"), desc = "Interrupt opencode" },
-      { "<leader>ac", cmd("session.compact"), desc = "Compact opencode session" },
+      { "<leader>aoa", ask, mode = { "n", "x" }, desc = "Ask opencode" },
+      { "<leader>aos", pick, mode = { "n", "x" }, desc = "Select opencode prompt/command" },
+      { "<leader>aoo", op(), mode = { "n", "x" }, expr = true, desc = "Send motion to opencode" },
+      { "<leader>aoO", op("_"), expr = true, desc = "Send line to opencode" },
+      { "<leader>aon", cmd("session.new"), desc = "New opencode session" },
+      { "<leader>aoi", cmd("session.interrupt"), desc = "Interrupt opencode" },
+      { "<leader>aoc", cmd("session.compact"), desc = "Compact opencode session" },
       { "<S-C-u>", cmd("session.half.page.up"), desc = "Scroll opencode messages up" },
       { "<S-C-d>", cmd("session.half.page.down"), desc = "Scroll opencode messages down" },
     },
@@ -53,7 +54,8 @@ return {
       -- preset, so this is the only place the leader menu can be squared off.
       win = { border = "single" },
       spec = {
-        { "<leader>a", group = "opencode" },
+        { "<leader>a", group = "ai" },
+        { "<leader>ao", group = "opencode" },
       },
     },
   },
