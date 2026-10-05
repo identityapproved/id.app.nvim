@@ -25,11 +25,31 @@ local function env(name, fallback)
   return value
 end
 
+---@param name string environment variable
+---@param fallback integer used when unset, unparseable or below 1
+---@return integer
+local function env_int(name, fallback)
+  local value = tonumber(vim.env[name])
+  if not value or value < 1 then
+    return fallback
+  end
+  return math.floor(value)
+end
+
 -- Fallbacks are the voidbox tier: a fresh clone on a host with no LOCAL_* vars
 -- set still works, just with the smaller models.
 M.url = env("LOCAL_LLM_URL", "http://127.0.0.1:11434"):gsub("/+$", "")
 M.fim_model = env("LOCAL_FIM_MODEL", "qwen2.5-coder:0.5b-base")
 M.chat_model = env("LOCAL_CHAT_MODEL", "qwen2.5-coder:3b-instruct")
+
+-- How many FIM completions minuet asks for. Env-resolved because it is not a
+-- free quality knob: minuet fires this many *independent* requests, so it is
+-- really a concurrency request and must not exceed the server's
+-- OLLAMA_NUM_PARALLEL, or the extra ones queue and the wall time multiplies.
+-- 1 is the voidbox tier, where a second request would simply double a latency
+-- that is already the whole problem; the cost of that is <A-;> having nothing
+-- to cycle to there.
+M.fim_completions = env_int("LOCAL_FIM_COMPLETIONS", 1)
 
 -- OpenAI-compatible FIM endpoint. Ollama accepts a "suffix" field here, which
 -- is what makes fill-in-middle work at all.

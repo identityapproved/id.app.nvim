@@ -41,9 +41,20 @@ return {
       -- Third guard on manual-only, alongside staying out of default_sources
       -- and prefetch_on_insert = false.
       blink = { enable_auto_complete = false },
-      -- One completion, short. Generation length is half the latency budget on
-      -- a CPU with no AVX, and a 512-char window keeps prompt eval cheap too.
-      n_completions = 1,
+      -- Two completions, short. n_completions is NOT a sampling count: the
+      -- backend fires that many independent curl jobs with identical bodies
+      -- (openai_base.lua, `for idx = 1, n_completions`), so it is also the
+      -- server-side concurrency this asks for. At 1 there is nothing for
+      -- <A-;>/<A-'> to cycle to -- advance() wraps straight back onto the only
+      -- suggestion -- which reads as "the next key does nothing". At 2 cycling
+      -- works, and it only stays cheap where the server has a matching
+      -- OLLAMA_NUM_PARALLEL; with 1 slot ollama queues the second job behind
+      -- the first and the wall time doubles. That is why the count is
+      -- env-resolved rather than written here: g33nto sets 2, voidbox stays at
+      -- the fallback of 1, and lua/ keeps no host conditional.
+      n_completions = llm.fim_completions,
+      -- 512-char window keeps prompt eval cheap. Not yet retuned for the GPU
+      -- tier; see the note's benchmark before raising it.
       context_window = 512,
       provider_options = {
         openai_fim_compatible = {
