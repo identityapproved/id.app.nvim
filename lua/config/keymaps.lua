@@ -49,6 +49,11 @@ map("t", "<C-l>", term_nav("l"), { expr = true, desc = "Focus right window" })
 
 map("n", "<leader>zn", "<cmd>ZkNewPrompt<cr>", { desc = "Zk new note (prompt/date)" })
 
+-- Note <leader>W, not <leader>w -- the lower case key is LazyVim's window group.
+map("n", "<leader>W", function()
+  require("config.doas").write()
+end, { desc = "Write as root" })
+
 -- Block comments (built-in gc/gcc is line-only). gb wraps a selection, gbc the current line.
 map("x", "gb", ":<C-u>lua require('config.blockcomment').toggle()<cr>", { silent = true, desc = "Toggle block comment (selection)" })
 map("n", "gbc", "<cmd>lua require('config.blockcomment').toggle(true)<cr>", { silent = true, desc = "Toggle block comment (line)" })
