@@ -46,17 +46,30 @@ return {
   -- Markdown preview rendered in a floating terminal by `glow` (installed at
   -- /usr/bin/glow; glow_path is auto-detected from $PATH). Used both for plain
   -- markdown buffers and for the markdown that devdocs.nvim opens.
+  --
+  -- This is the read path for wide tables: a markdown table row is one buffer
+  -- line and nothing in the editor can fold it, while glow reflows every cell
+  -- to the width it is handed. Same Lain glamour style as the fzf-lua previewer
+  -- and lainland's tmux-pick, so all three previews look alike.
   {
     "ellisonleao/glow.nvim",
     cmd = "Glow",
     ft = "markdown",
     opts = {
       border = "single",
-      width_ratio = 0.8,
-      height_ratio = 0.8,
+      style = vim.fn.expand("$HOME/.config/glow/themes/lain.json"),
+      width_ratio = 0.9,
+      height_ratio = 0.9,
+      -- The ratio-derived width is then clamped to `width` (the plugin defaults
+      -- it to 100 columns, which is what was cutting the tables short), so this
+      -- has to sit above any real terminal width rather than be unset.
+      width = 500,
     },
     keys = {
-      { "<leader>cp", "<cmd>Glow<cr>", desc = "Markdown Preview (glow)", ft = "markdown" },
+      -- Not <leader>c: that is LazyVim's code group. <leader>m would be the
+      -- markdown key but marks.nvim owns it, so the preview takes a
+      -- markdown-local <leader>p.
+      { "<leader>p", "<cmd>Glow<cr>", desc = "Markdown Preview (glow)", ft = "markdown" },
     },
   },
 }
