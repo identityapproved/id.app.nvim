@@ -11,17 +11,11 @@ map({ "n", "x" }, "k", "k", { desc = "Up" })
 map({ "n", "x" }, "<Down>", "j", { desc = "Down" })
 map({ "n", "x" }, "<Up>", "k", { desc = "Up" })
 
-map("n", "<leader>twa", task.add_task, { desc = "Add Taskwarrior task" })
-
-map("n", "<leader>t-", function()
-  vim.cmd("split | terminal")
-  vim.cmd("startinsert")
-end, { desc = "Terminal (horizontal split)" })
-
-map("n", "<leader>t|", function()
-  vim.cmd("vsplit | terminal")
-  vim.cmd("startinsert")
-end, { desc = "Terminal (vertical split)" })
+-- Uppercase, like <leader>W below: markdown-plus maps <leader>tw (wrap cell)
+-- buffer-locally in markdown buffers, and a buffer-local complete match beats a
+-- longer global one, so <leader>twa never fired in a note -- which is where a
+-- task gets captured.
+map("n", "<leader>T", task.add_task, { desc = "Add Taskwarrior task" })
 
 map("n", "<leader>tmp", function()
   local ts = os.date("%Y%m%d-%H%M%S")
