@@ -1,15 +1,8 @@
 return {
   {
-    "vhyrro/luarocks.nvim",
-    priority = 1000,
-    opts = {
-      rocks = { "dkjson" },
-    },
-    config = true,
-  },
-  {
     "3rd/image.nvim",
-    dependencies = { "vhyrro/luarocks.nvim" },
+    -- skip the rockspec build; the magick rock is only for magick_rock, we use magick_cli
+    build = false,
     ft = { "markdown" },
     enabled = function()
       return vim.env.TMUX == nil
