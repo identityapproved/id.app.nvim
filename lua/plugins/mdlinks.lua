@@ -8,5 +8,13 @@ return {
       end,
       desc = "Find links in buffer",
     },
+    {
+      "gp",
+      function()
+        require("config.mdlinks").peek()
+      end,
+      ft = "markdown",
+      desc = "Peek link in float",
+    },
   },
 }

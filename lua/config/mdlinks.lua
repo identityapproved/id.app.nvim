@@ -83,6 +83,7 @@ local function scan_line(line, lnum, entries)
     table.insert(entries, {
       lnum = lnum,
       col = s,
+      ecol = e,
       kind = kind,
       label = vim.trim(label or ""),
       raw = target,
@@ -302,6 +303,61 @@ local function open_target(bufnr, entry)
   local lnum = math.min(entry.tlnum or 1, vim.api.nvim_buf_line_count(0))
   vim.api.nvim_win_set_cursor(0, { lnum, 0 })
   vim.cmd("normal! zz")
+end
+
+--- Open the local link under the cursor in a floating window.
+function M.peek()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local cur = vim.api.nvim_win_get_cursor(0)
+  local col = cur[2] + 1
+  local hit
+  for _, entry in ipairs(M.collect(bufnr)) do
+    if entry.lnum == cur[1] and entry.kind ~= "refdef" and col >= entry.col and col <= entry.ecol then
+      hit = entry
+      break
+    end
+  end
+  if not hit then
+    vim.notify("No local link under cursor", vim.log.levels.INFO)
+    return
+  end
+  if not hit.file then
+    vim.notify(("Target not found: %s"):format(hit.missing or hit.target), vim.log.levels.WARN)
+    return
+  end
+
+  local target = vim.fn.bufadd(hit.file)
+  vim.fn.bufload(target)
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+  local win = vim.api.nvim_open_win(target, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    border = "single",
+    title = " " .. vim.fn.fnamemodify(hit.file, ":~:.") .. " ",
+    title_pos = "center",
+  })
+  vim.bo[target].buflisted = true
+  local lnum = math.min(hit.tlnum or 1, vim.api.nvim_buf_line_count(target))
+  vim.api.nvim_win_set_cursor(win, { lnum, 0 })
+  vim.cmd("normal! zt")
+  -- q closes the float only; the buffer may also be open in a normal window
+  vim.keymap.set("n", "q", function()
+    if vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, false)
+    end
+  end, { buffer = target, nowait = true, desc = "Close link peek" })
+  vim.api.nvim_create_autocmd("WinLeave", {
+    once = true,
+    callback = function()
+      if vim.api.nvim_get_current_win() == win then
+        vim.api.nvim_win_close(win, false)
+      end
+    end,
+  })
 end
 
 --- Pick a local link in the current buffer and follow it.
